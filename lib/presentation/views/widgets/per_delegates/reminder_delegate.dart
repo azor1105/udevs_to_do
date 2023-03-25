@@ -33,7 +33,7 @@ class ReminderDelegate extends SliverPersistentHeaderDelegate {
           borderRadius: BorderRadius.circular(5.r),
         ),
         child: Stack(
-          clipBehavior: Clip.none,
+          // clipBehavior: Clip.none,
           children: [
             Positioned(
               top: -5.h,
@@ -59,11 +59,13 @@ class ReminderDelegate extends SliverPersistentHeaderDelegate {
                       color: ColorConst.white,
                     ),
                   ),
+                  SizedBox(height: 8.h),
                   Text(
-                    "Today Reminder",
+                    "Meeting with client",
                     style: RubikFont.w400
                         .copyWith(color: ColorConst.cF3F3F3, fontSize: 11.sp),
                   ),
+                  SizedBox(height: 4.h),
                   Text(
                     "13.00 PM",
                     style: RubikFont.w400

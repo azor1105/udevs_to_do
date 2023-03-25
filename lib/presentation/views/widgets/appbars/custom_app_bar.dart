@@ -44,7 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hello Brenda!",
+                        "Hello A'zambek!",
                         style: RubikFont.w400.copyWith(
                           fontSize: 18.sp,
                           color: ColorConst.white,
