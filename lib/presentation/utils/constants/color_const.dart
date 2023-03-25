@@ -21,4 +21,8 @@ class ColorConst {
     Color(0xFFE0139C),
   ];
   static const cF456C3 = Color(0xFFF456C3);
+  static const blueGradient = [
+    Color(0xFF81C7F5),
+    Color(0xFF3867D5),
+  ];
 }

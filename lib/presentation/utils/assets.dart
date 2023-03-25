@@ -6,4 +6,5 @@ class Assets {
 
   // .png || .jpg
   static const onBoardingImg = 'assets/images/on_boarding.png';
+  static const clipBoardImg = 'assets/images/clipboard.png';
 }

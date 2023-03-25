@@ -15,7 +15,7 @@ class App extends StatelessWidget {
       key: LocalDataKeys.onBoardingShowed,
     );
     return ScreenUtilInit(
-      designSize: const Size(375, 880),
+      designSize: const Size(375, 812),
       splitScreenMode: true,
       minTextAdapt: true,
       builder: (context, child) {
