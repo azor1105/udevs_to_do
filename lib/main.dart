@@ -18,5 +18,5 @@ Future<void> main() async {
   // Initializing notification service
   LocalNotificationService.localNotificationService.init();
 
-  runApp(App());
+  runApp(const App());
 }

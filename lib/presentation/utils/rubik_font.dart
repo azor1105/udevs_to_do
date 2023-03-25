@@ -14,14 +14,14 @@ class RubikFont {
     fontFamily: "Rubik",
     fontWeight: FontWeight.w400,
     fontSize: 20.sp,
-    color: ColorConst.black,
+    color: ColorConst.cC6C6C8,
   );
 
   static final w500 = TextStyle(
     fontFamily: "Rubik",
     fontWeight: FontWeight.w500,
     fontSize: 20.sp,
-    color: ColorConst.black,
+    color: ColorConst.c554E8F,
   );
 
   static final w600 = TextStyle(
