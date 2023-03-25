@@ -13,4 +13,12 @@ class ColorConst {
     Color(0xFF5DE61A),
     Color(0xFF39A801),
   ];
+  static const cF9FCFF = Color(0xFFF9FCFF);
+  static const c9F9F9F = Color(0xFF9F9F9F);
+  static const cBEBEBE = Color(0xFFBEBEBE);
+  static const pinkGradient = [
+    Color(0xFFF857C3),
+    Color(0xFFE0139C),
+  ];
+  static const cF456C3 = Color(0xFFF456C3);
 }
