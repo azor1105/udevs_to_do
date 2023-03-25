@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
-import 'package:udevs_todo/presentation/utils/rubik_font.dart';
-import 'package:udevs_todo/presentation/views/widgets/appbar/custom_app_bar.dart';
+import 'package:udevs_todo/presentation/views/widgets/add_bottom_paint.dart';
+import 'package:udevs_todo/presentation/views/widgets/buttons/circle_pink_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,10 +11,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConst.cF9FCFF,
+      backgroundColor: ColorConst.white,
       body: Column(
         children: [
-          CustomAppBar(),
+          SizedBox(height: 40.h),
         ],
       ),
     );

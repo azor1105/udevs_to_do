@@ -12,7 +12,7 @@ class CustomAppBar extends StatelessWidget {
       width: double.infinity,
       height: 108.h,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: ColorConst.blueGradient),
+        gradient: LinearGradient(colors: ColorConst.appBarGradient),
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -56,7 +56,7 @@ class CustomAppBar extends StatelessWidget {
                 ),
                 CircleAvatar(
                   radius: 20.r,
-                  backgroundImage:const NetworkImage(
+                  backgroundImage: const NetworkImage(
                     'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj',
                   ),
                 ),

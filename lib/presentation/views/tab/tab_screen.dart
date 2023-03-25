@@ -3,8 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
+import 'package:udevs_todo/presentation/utils/rubik_font.dart';
 import 'package:udevs_todo/presentation/views/tab/tabs/home/home_screen.dart';
 import 'package:udevs_todo/presentation/views/tab/tabs/task/task_screen.dart';
+import 'package:udevs_todo/presentation/views/tab/tabs/add_bottom/add_bottom_view.dart';
+import 'package:udevs_todo/presentation/views/widgets/add_bottom_paint.dart';
+import 'package:udevs_todo/presentation/views/widgets/appbar/custom_app_bar.dart';
 import 'package:udevs_todo/presentation/views/widgets/buttons/circle_pink_button.dart';
 
 class TabScreen extends StatefulWidget {
@@ -26,11 +30,26 @@ class _TabScreenState extends State<TabScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: CirclePinkButton(
-        onTap: () {},
+        onTap: () {
+          showModalBottomSheet(
+            elevation: 0.0,
+            backgroundColor: ColorConst.transparent,
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => const AddBottomView(),
+          );
+        },
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: Column(
+        children: [
+          const CustomAppBar(),
+          Expanded(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: _screens,
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: SizedBox(
         height: 76.h,
