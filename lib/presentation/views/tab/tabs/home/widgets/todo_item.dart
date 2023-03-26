@@ -31,7 +31,9 @@ class TodoItem extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: 15.h, top: 5.h),
             child: Text(
-              DateFormat.MMMEd().format(cachedTodo.dateTime),
+              DateTime.now().difference(cachedTodo.dateTime).inDays == 0
+                  ? "Today"
+                  : DateFormat.MMMEd().format(cachedTodo.dateTime),
               style: RubikFont.w500
                   .copyWith(fontSize: 13.sp, color: ColorConst.c8B87B3),
             ),
