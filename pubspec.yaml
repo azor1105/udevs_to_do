@@ -18,6 +18,7 @@ dependencies:
   fluttertoast: ^8.2.1
   flutter_svg: ^2.0.4
   zoom_tap_animation: ^1.1.0
+  intl: ^0.18.0
   
   #Business logic needs
   sqflite: ^2.2.6

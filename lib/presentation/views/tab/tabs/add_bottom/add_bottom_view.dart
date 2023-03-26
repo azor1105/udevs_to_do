@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
-import 'package:udevs_todo/data/services/notification/notification_service.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
 import 'package:udevs_todo/presentation/utils/date_time_utils.dart';
@@ -14,6 +14,7 @@ import 'package:udevs_todo/presentation/views/tab/tabs/add_bottom/widgets/custom
 import 'package:udevs_todo/presentation/views/widgets/add_bottom_paint.dart';
 import 'package:udevs_todo/presentation/views/widgets/buttons/circle_pink_button.dart';
 import 'package:udevs_todo/presentation/views/widgets/buttons/custom_blue_button.dart';
+import 'package:udevs_todo/presentation/views/widgets/buttons/simple_button.dart';
 
 class AddBottomView extends StatefulWidget {
   const AddBottomView({super.key});
@@ -26,6 +27,7 @@ class _AddBottomViewState extends State<AddBottomView> {
   late final TextEditingController controller;
   List<CategoryModel> categories = [];
   int selectedCategoryId = -1;
+  DateTime? pickedDate;
 
   @override
   void initState() {
@@ -91,19 +93,31 @@ class _AddBottomViewState extends State<AddBottomView> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 30.h, left: 18.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(
-                          'Choose date',
-                          style: RubikFont.w400.copyWith(
-                            fontSize: 13.sp,
-                            color: ColorConst.c404040,
-                          ),
+                        SimpleButton(
+                          title: 'Choose date',
+                          onPressed: () async {
+                            DateTime? dateTime =
+                                await DateTimeUtils.getDateTime(
+                              context: context,
+                            );
+                            if (dateTime == null) {
+                              MessageUtils.getMyToast(
+                                message: 'Please choose date and time',
+                              );
+                            } else {
+                              setState(() {
+                                pickedDate = dateTime;
+                              });
+                            }
+                          },
                         ),
-                        SizedBox(height: 15.h),
+                        SizedBox(width: 15.w),
                         Text(
-                          'Not Choosed',
+                          pickedDate == null
+                              ? 'Not Choosed'
+                              : "${DateFormat.MMMMd().format(pickedDate!)} ${DateFormat.Hm().format(pickedDate!)} ",
                           style: RubikFont.w500.copyWith(
                             fontSize: 13.sp,
                             color: ColorConst.c404040,
@@ -114,18 +128,7 @@ class _AddBottomViewState extends State<AddBottomView> {
                   ),
                   const Spacer(),
                   CustomBlueButton(
-                    onTap: () async {
-                      DateTime? dateTime =
-                          await DateTimeUtils.getDateTime(context: context);
-                      if (dateTime == null) {
-                        MessageUtils.getMyToast(
-                            message: 'Please choose date and time');
-                      }
-                      LocalNotificationService.localNotificationService
-                          .scheduleNotification(
-                        dateTime: dateTime!,
-                      );
-                    },
+                    onTap: () {},
                     title: 'Add task',
                   ),
                   SizedBox(height: 16.h),
