@@ -20,10 +20,16 @@ class HomeScreen extends StatelessWidget {
             return state.todos.isNotEmpty
                 ? CustomScrollView(
                     slivers: [
-                      if (state.showReminder && state.todos.isNotEmpty)
+                      if (state.showReminder &&
+                          state.todos
+                              .where((element) => !element.isDone)
+                              .toList()
+                              .isNotEmpty)
                         SliverPersistentHeader(
                           delegate: ReminderDelegate(
-                            state.todos[0],
+                            state.todos
+                                .where((element) => !element.isDone)
+                                .toList()[0],
                           ),
                         ),
                       SliverPadding(
@@ -33,7 +39,12 @@ class HomeScreen extends StatelessWidget {
                             (context, index) {
                               return TodoItem(
                                 cachedTodo: state.todos[index],
-                                showDay: false,
+                                showDay: index == 0 ||
+                                    state.todos[index].dateTime
+                                            .difference(
+                                                state.todos[index - 1].dateTime)
+                                            .inDays >
+                                        0,
                               );
                             },
                             childCount: state.todos.length,

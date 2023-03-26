@@ -23,10 +23,16 @@ class TaskScreen extends StatelessWidget {
           if (state.todoStatus.isSuccess) {
             return CustomScrollView(
               slivers: [
-                if (state.showReminder && state.todos.isNotEmpty)
+                if (state.showReminder &&
+                    state.todos
+                        .where((element) => !element.isDone)
+                        .toList()
+                        .isNotEmpty)
                   SliverPersistentHeader(
                     delegate: ReminderDelegate(
-                      state.todos[0],
+                      state.todos
+                          .where((element) => !element.isDone)
+                          .toList()[0],
                     ),
                   ),
                 SliverPadding(

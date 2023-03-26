@@ -124,7 +124,14 @@ class TodoItem extends StatelessWidget {
                           child: Text(
                             cachedTodo.title,
                             style: RubikFont.w500.copyWith(
+                              decorationColor: ColorConst.cD9D9D9,
+                              decoration: cachedTodo.isDone
+                                  ? TextDecoration.underline
+                                  : null,
                               fontSize: 14.sp,
+                              color: cachedTodo.isDone
+                                  ? ColorConst.cD9D9D9
+                                  : ColorConst.c554E8F,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
