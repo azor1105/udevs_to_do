@@ -15,7 +15,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<AddTodoEvent>(addTodo);
     on<GetTodosEvent>(getTodos);
     on<DeleteTodoEvent>(deleteTodo);
-    on<UpdateStatusEvent>(updateStatus);
+    on<UpdateTodoEvent>(updateTodo);
   }
 
   final TodoRepository todoRepository;
@@ -79,24 +79,20 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(state.copyWith(todos: todos));
   }
 
-  void updateStatus(
-    UpdateStatusEvent event,
+  void updateTodo(
+    UpdateTodoEvent event,
     Emitter<TodoState> emit,
   ) async {
     var todos = state.todos;
     for (int i = 0; i < todos.length; i++) {
-      if (todos[i].id == event.id) {
-        var todo = todos[i];
+      if (todos[i].id == event.todoModel.id) {
         todos.removeAt(i);
-        todos.insert(i, todo.copyWith(isDone: event.status));
+        todos.insert(i, event.todoModel);
         break;
       }
     }
     emit(state.copyWith(todos: todos));
-    todoRepository.updateCachedTodoStatus(
-      event.id,
-      event.status,
-    );
+    todoRepository.updateCachedTodo(cachedTodo: event.todoModel);
   }
 
   int getTaskCountByCatgory(int categoryId) {

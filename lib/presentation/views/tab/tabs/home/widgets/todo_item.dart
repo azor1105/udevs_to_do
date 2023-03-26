@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:udevs_todo/bloc/todo_bloc.dart';
 import 'package:udevs_todo/data/models/cached_todo_model.dart';
@@ -11,6 +10,8 @@ import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
 import 'package:udevs_todo/presentation/utils/rubik_font.dart';
 import 'package:udevs_todo/presentation/views/widgets/checkbox/custom_check_box.dart';
+import 'custom_slide_item.dart';
+import 'edit_bottom_view.dart';
 
 class TodoItem extends StatelessWidget {
   const TodoItem({
@@ -44,15 +45,21 @@ class TodoItem extends StatelessWidget {
             extentRatio: 0.28,
             motion: const ScrollMotion(),
             children: [
-              customSlideItem(
-                context: context,
+              CustomSlideItem(
                 margin: EdgeInsets.only(left: 12.w, right: 6.w),
                 iconPath: Assets.commentIcon,
                 color: ColorConst.cC4CEF5,
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    elevation: 0.0,
+                    backgroundColor: ColorConst.transparent,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) => EditBottomView(todoModel: cachedTodo),
+                  );
+                },
               ),
-              customSlideItem(
-                context: context,
+              CustomSlideItem(
                 iconPath: Assets.trashIcon,
                 color: ColorConst.cFFCFCF,
                 onTap: () {
@@ -107,9 +114,8 @@ class TodoItem extends StatelessWidget {
                         CustomCheckBox(
                           isSelected: cachedTodo.isDone,
                           onChanged: (v) => context.read<TodoBloc>().add(
-                                UpdateStatusEvent(
-                                  id: cachedTodo.id!,
-                                  status: v,
+                                UpdateTodoEvent(
+                                  todoModel: cachedTodo.copyWith(isDone: v),
                                 ),
                               ),
                         ),
@@ -147,33 +153,6 @@ class TodoItem extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget customSlideItem({
-    required String iconPath,
-    required Color color,
-    EdgeInsets? margin,
-    required VoidCallback onTap,
-    required BuildContext context,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 35.h,
-        width: 35.w,
-        margin: margin,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-        ),
-        child: Center(
-          child: SvgPicture.asset(
-            iconPath,
-            height: 16.h,
-          ),
-        ),
-      ),
     );
   }
 }

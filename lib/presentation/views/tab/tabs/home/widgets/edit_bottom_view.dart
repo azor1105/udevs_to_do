@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:udevs_todo/bloc/todo_bloc.dart';
+import 'package:udevs_todo/data/models/cached_todo_model.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
@@ -17,22 +18,27 @@ import 'package:udevs_todo/presentation/views/widgets/buttons/circle_pink_button
 import 'package:udevs_todo/presentation/views/widgets/buttons/custom_blue_button.dart';
 import 'package:udevs_todo/presentation/views/widgets/buttons/simple_button.dart';
 
-class AddBottomView extends StatefulWidget {
-  const AddBottomView({super.key});
+class EditBottomView extends StatefulWidget {
+  const EditBottomView({super.key, required this.todoModel});
+
+  final CachedTodoModel todoModel;
 
   @override
-  State<AddBottomView> createState() => _AddBottomViewState();
+  State<EditBottomView> createState() => _EditBottomViewState();
 }
 
-class _AddBottomViewState extends State<AddBottomView> {
+class _EditBottomViewState extends State<EditBottomView> {
   late final TextEditingController controller;
   List<CategoryModel> categories = [];
-  int selectedCategoryId = -1;
-  DateTime? pickedDate;
+  late DateTime pickedDate;
+  late int selectedCategoryId;
 
   @override
   void initState() {
     controller = TextEditingController();
+    controller.text = widget.todoModel.title;
+    selectedCategoryId = widget.todoModel.categoryId;
+    pickedDate = widget.todoModel.dateTime;
     categories = context.read<CategoryRepository>().categories;
     super.initState();
   }
@@ -57,7 +63,7 @@ class _AddBottomViewState extends State<AddBottomView> {
                   SizedBox(height: 43.h),
                   Center(
                     child: Text(
-                      "Add new task",
+                      "Edit task",
                       style: RubikFont.w500.copyWith(
                         fontSize: 13.sp,
                         color: ColorConst.c404040,
@@ -77,9 +83,11 @@ class _AddBottomViewState extends State<AddBottomView> {
                           category: categories[index],
                           isSelected:
                               categories[index].id == selectedCategoryId,
-                          onPressed: () => setState(() {
-                            selectedCategoryId = categories[index].id;
-                          }),
+                          onPressed: () => setState(
+                            () {
+                              selectedCategoryId = categories[index].id;
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -103,11 +111,7 @@ class _AddBottomViewState extends State<AddBottomView> {
                                 await DateTimeUtils.getDateTime(
                               context: context,
                             );
-                            if (dateTime == null) {
-                              MessageUtils.getMyToast(
-                                message: 'Please choose date and time',
-                              );
-                            } else {
+                            if (dateTime != null) {
                               setState(() {
                                 pickedDate = dateTime;
                               });
@@ -116,9 +120,7 @@ class _AddBottomViewState extends State<AddBottomView> {
                         ),
                         SizedBox(width: 15.w),
                         Text(
-                          pickedDate == null
-                              ? 'Not Choosed'
-                              : "${DateFormat.MMMMd().format(pickedDate!)} ${DateFormat.Hm().format(pickedDate!)} ",
+                          "${DateFormat.MMMMd().format(pickedDate)} ${DateFormat.Hm().format(pickedDate)} ",
                           style: RubikFont.w500.copyWith(
                             fontSize: 13.sp,
                             color: ColorConst.c404040,
@@ -130,18 +132,29 @@ class _AddBottomViewState extends State<AddBottomView> {
                   const Spacer(),
                   CustomBlueButton(
                     onTap: () {
-                      context.read<TodoBloc>().add(
-                            AddTodoEvent(
-                              selectedCategoryId: selectedCategoryId,
-                              title: controller.text,
-                              dateTime: pickedDate,
-                              context: context,
-                              categoryName:
-                                  categories[selectedCategoryId].title,
-                            ),
-                          );
+                      if (controller.text == '') {
+                        MessageUtils.getMyToast(
+                            message: 'Please fill the field');
+                      } else if (pickedDate
+                              .difference(DateTime.now())
+                              .inMinutes <=
+                          0) {
+                        MessageUtils.getMyToast(
+                            message: 'Task time must be in the future');
+                      } else {
+                        context.read<TodoBloc>().add(
+                              UpdateTodoEvent(
+                                todoModel: widget.todoModel.copyWith(
+                                  categoryId: selectedCategoryId,
+                                  dateTime: pickedDate,
+                                  title: controller.text,
+                                ),
+                              ),
+                            );
+                        Navigator.of(context).pop();
+                      }
                     },
-                    title: 'Add task',
+                    title: 'Save task',
                   ),
                   SizedBox(height: 16.h),
                 ],

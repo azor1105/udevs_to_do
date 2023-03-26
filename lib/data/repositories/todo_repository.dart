@@ -18,18 +18,6 @@ class TodoRepository {
     return cachedTodo.copyWith(id: id);
   }
 
-  Future<int> updateCachedTodoStatus(int id, bool status) async {
-    Map<String, dynamic> row = {
-      CachedToDoFields.isDone: status,
-    };
-    final db = await LocalDb.getInstance.database;
-    return db.update(
-      CachedToDoFields.tableName,
-      row,
-      where: '${CachedToDoFields.id} = ?',
-      whereArgs: [id],
-    );
-  }
 
   Future<int> deleteCachedTodoById(int id) async {
     final db = await LocalDb.getInstance.database;
@@ -43,7 +31,6 @@ class TodoRepository {
   }
 
   Future<int> updateCachedTodo({
-    required int id,
     required CachedTodoModel cachedTodo,
   }) async {
     Map<String, Object?> toDo = cachedTodo.toJson();
@@ -59,7 +46,7 @@ class TodoRepository {
       CachedToDoFields.tableName,
       row,
       where: '${CachedToDoFields.id} = ?',
-      whereArgs: [id],
+      whereArgs: [cachedTodo.id],
     );
   }
 }

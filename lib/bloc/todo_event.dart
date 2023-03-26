@@ -19,16 +19,13 @@ class DeleteTodoEvent extends TodoEvent {
   List<Object?> get props => [id];
 }
 
-class UpdateStatusEvent extends TodoEvent {
-  const UpdateStatusEvent({
-    required this.id,
-    required this.status,
-  });
-  final int id;
-  final bool status;
+class UpdateTodoEvent extends TodoEvent {
+  const UpdateTodoEvent({required this.todoModel});
+
+  final CachedTodoModel todoModel;
 
   @override
-  List<Object?> get props => [id, status];
+  List<Object?> get props => [todoModel];
 }
 
 class AddTodoEvent extends TodoEvent {
