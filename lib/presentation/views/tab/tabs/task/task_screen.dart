@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
@@ -22,12 +21,14 @@ class TaskScreen extends StatelessWidget {
         slivers: [
           SliverPersistentHeader(delegate: ReminderDelegate()),
           SliverPadding(
-            padding: EdgeInsets.only(left: 18.w, top: 10.h),
+            padding: EdgeInsets.only(left: 18.w),
             sliver: SliverToBoxAdapter(
               child: Text(
                 'Projects',
-                style: RubikFont.w500
-                    .copyWith(fontSize: 13.sp, color: ColorConst.c8B87B3),
+                style: RubikFont.w500.copyWith(
+                  fontSize: 13.sp,
+                  color: ColorConst.c8B87B3,
+                ),
               ),
             ),
           ),

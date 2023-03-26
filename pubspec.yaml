@@ -19,7 +19,8 @@ dependencies:
   flutter_svg: ^2.0.4
   zoom_tap_animation: ^1.1.0
   intl: ^0.18.0
-  
+  flutter_slidable: ^2.0.0 
+   
   #Business logic needs
   sqflite: ^2.2.6
   shared_preferences: ^2.0.20
