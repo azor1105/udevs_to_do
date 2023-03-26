@@ -19,17 +19,17 @@ class HomeScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(delegate: ReminderDelegate()),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return const TodoItem();
-                },
-                childCount: 1,
-              ),
-            ),
-          ),
+          // SliverPadding(
+          //   padding: EdgeInsets.symmetric(horizontal: 18.w),
+          //   sliver: SliverList(
+          //     delegate: SliverChildBuilderDelegate(
+          //       (context, index) {
+          //         return const TodoItem();
+          //       },
+          //       childCount: 1,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

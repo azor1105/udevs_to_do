@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:udevs_todo/data/models/cached_todo_model.dart';
+import 'package:udevs_todo/data/repositories/category_repository.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
 import 'package:udevs_todo/presentation/utils/rubik_font.dart';
 import 'package:udevs_todo/presentation/views/widgets/checkbox/custom_check_box.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem({super.key});
+  const TodoItem({
+    super.key,
+    required this.cachedTodo,
+    required this.showDay,
+  });
+
+  final CachedTodoModel cachedTodo;
+  final bool showDay;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 15.h, top: 5.h),
-          child: Text(
-            'Today',
-            style: RubikFont.w500
-                .copyWith(fontSize: 13.sp, color: ColorConst.c8B87B3),
+        if (showDay)
+          Padding(
+            padding: EdgeInsets.only(bottom: 15.h, top: 5.h),
+            child: Text(
+              DateFormat.MMMEd().format(cachedTodo.dateTime),
+              style: RubikFont.w500
+                  .copyWith(fontSize: 13.sp, color: ColorConst.c8B87B3),
+            ),
           ),
-        ),
         Slidable(
-          key: const ValueKey(0),
+          key: ValueKey(cachedTodo.id),
           endActionPane: ActionPane(
             extentRatio: 0.28,
             motion: const ScrollMotion(),
@@ -56,7 +68,9 @@ class TodoItem extends StatelessWidget {
                   height: 55.h,
                   width: 4.w,
                   decoration: BoxDecoration(
-                    color: ColorConst.c373737,
+                    color: context.read<CategoryRepository>().getColorById(
+                          cachedTodo.categoryId,
+                        ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(5.r),
                       bottomLeft: Radius.circular(5.r),
@@ -83,7 +97,7 @@ class TodoItem extends StatelessWidget {
                         ),
                         SizedBox(width: 11.w),
                         Text(
-                          '10.00 AM',
+                          DateFormat.Hm().format(cachedTodo.dateTime),
                           style: RubikFont.w400.copyWith(
                             fontSize: 11.sp,
                             color: ColorConst.cC6C6C8,
@@ -92,7 +106,7 @@ class TodoItem extends StatelessWidget {
                         SizedBox(width: 13.w),
                         Expanded(
                           child: Text(
-                            'Meeting with client',
+                            cachedTodo.title,
                             style: RubikFont.w500.copyWith(
                               fontSize: 14.sp,
                             ),

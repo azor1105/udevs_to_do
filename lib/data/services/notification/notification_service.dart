@@ -5,7 +5,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService {
-  int id = 0;
   static final LocalNotificationService localNotificationService =
       LocalNotificationService._();
 
@@ -75,7 +74,10 @@ class LocalNotificationService {
   DarwinNotificationDetails darwinNotificationDetails =
       const DarwinNotificationDetails();
 
-  void scheduleNotification({required DateTime dateTime}) async {
+  void scheduleNotification({
+    required DateTime dateTime,
+    required int id,
+  }) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       "Test",
