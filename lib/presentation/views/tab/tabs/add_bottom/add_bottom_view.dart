@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
+import 'package:udevs_todo/data/services/notification/notification_service.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
+import 'package:udevs_todo/presentation/utils/date_time_utils.dart';
+import 'package:udevs_todo/presentation/utils/message_utils.dart';
 import 'package:udevs_todo/presentation/utils/rubik_font.dart';
 import 'package:udevs_todo/presentation/views/tab/tabs/add_bottom/widgets/category_list_item.dart';
 import 'package:udevs_todo/presentation/views/tab/tabs/add_bottom/widgets/custom_text_fiel.dart';
@@ -111,7 +114,18 @@ class _AddBottomViewState extends State<AddBottomView> {
                   ),
                   const Spacer(),
                   CustomBlueButton(
-                    onTap: () {},
+                    onTap: () async {
+                      DateTime? dateTime =
+                          await DateTimeUtils.getDateTime(context: context);
+                      if (dateTime == null) {
+                        MessageUtils.getMyToast(
+                            message: 'Please choose date and time');
+                      }
+                      LocalNotificationService.localNotificationService
+                          .scheduleNotification(
+                        dateTime: dateTime!,
+                      );
+                    },
                     title: 'Add task',
                   ),
                   SizedBox(height: 16.h),

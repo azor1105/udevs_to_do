@@ -1,4 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// ignore: depend_on_referenced_packages
+import 'package:timezone/data/latest.dart' as tz;
+// ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService {
@@ -16,6 +19,8 @@ class LocalNotificationService {
       FlutterLocalNotificationsPlugin();
 
   void init() {
+    tz.initializeTimeZones();
+
     // Android
     const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -70,12 +75,15 @@ class LocalNotificationService {
   DarwinNotificationDetails darwinNotificationDetails =
       const DarwinNotificationDetails();
 
-  void scheduleNotification({required int delayedTime}) async {
+  void scheduleNotification({required DateTime dateTime}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       "Test",
       "Test body",
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: delayedTime)),
+      tz.TZDateTime.from(
+        dateTime,
+        tz.local,
+      ),
       NotificationDetails(
         android: AndroidNotificationDetails(
           androidNotificationChannel.id,

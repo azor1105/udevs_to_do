@@ -32,7 +32,6 @@ class App extends StatelessWidget {
               colorScheme:
                   ColorScheme.fromSwatch(primarySwatch: Colors.lightBlue),
             ),
-            onUnknownRoute: AppRouter.onGenerateRoute,
             home: showOnBoarding == null
                 ? const MainOnBoardingScreen()
                 : const TabScreen(),
