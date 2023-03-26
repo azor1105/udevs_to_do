@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:udevs_todo/bloc/todo_bloc.dart';
 import 'package:udevs_todo/data/models/cached_todo_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
@@ -42,13 +43,23 @@ class TodoItem extends StatelessWidget {
             motion: const ScrollMotion(),
             children: [
               customSlideItem(
+                context: context,
                 margin: EdgeInsets.only(left: 12.w, right: 6.w),
                 iconPath: Assets.commentIcon,
                 color: ColorConst.cC4CEF5,
+                onTap: () {},
               ),
               customSlideItem(
+                context: context,
                 iconPath: Assets.trashIcon,
                 color: ColorConst.cFFCFCF,
+                onTap: () {
+                  context.read<TodoBloc>().add(
+                        DeleteTodoEvent(
+                          id: cachedTodo.id!,
+                        ),
+                      );
+                },
               )
             ],
           ),
@@ -92,8 +103,13 @@ class TodoItem extends StatelessWidget {
                     child: Row(
                       children: [
                         CustomCheckBox(
-                          isSelected: false,
-                          onChanged: (v) {},
+                          isSelected: cachedTodo.isDone,
+                          onChanged: (v) => context.read<TodoBloc>().add(
+                                UpdateStatusEvent(
+                                  id: cachedTodo.id!,
+                                  status: v,
+                                ),
+                              ),
                         ),
                         SizedBox(width: 11.w),
                         Text(
@@ -129,19 +145,24 @@ class TodoItem extends StatelessWidget {
     required String iconPath,
     required Color color,
     EdgeInsets? margin,
+    required VoidCallback onTap,
+    required BuildContext context,
   }) {
-    return Container(
-      height: 35.h,
-      width: 35.w,
-      margin: margin,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-      child: Center(
-        child: SvgPicture.asset(
-          iconPath,
-          height: 16.h,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 35.h,
+        width: 35.w,
+        margin: margin,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+        ),
+        child: Center(
+          child: SvgPicture.asset(
+            iconPath,
+            height: 16.h,
+          ),
         ),
       ),
     );

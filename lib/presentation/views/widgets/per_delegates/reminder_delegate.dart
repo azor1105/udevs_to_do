@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:udevs_todo/bloc/todo_bloc.dart';
+import 'package:udevs_todo/data/models/cached_todo_model.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
 import 'package:udevs_todo/presentation/utils/rubik_font.dart';
 
 class ReminderDelegate extends SliverPersistentHeaderDelegate {
-  ReminderDelegate();
+  ReminderDelegate(this.cachedTodo);
 
-  double height = 132.h;
+  final CachedTodoModel cachedTodo;
 
   @override
   Widget build(
@@ -18,12 +20,12 @@ class ReminderDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return BlocSelector<TodoBloc, TodoState, double>(
+    return BlocSelector<TodoBloc, TodoState, num>(
       selector: (state) => state.showReminder ? 132.h : 0,
       builder: (context, state) {
-        height = state.toDouble();
-        return Container(
-          height: state,
+        return AnimatedContainer(
+          duration: const Duration(microseconds: 500),
+          height: state.toDouble(),
           width: double.infinity,
           padding: EdgeInsets.symmetric(
             vertical: 13.h,
@@ -71,13 +73,13 @@ class ReminderDelegate extends SliverPersistentHeaderDelegate {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        "Meeting with client",
+                        cachedTodo.title,
                         style: RubikFont.w400.copyWith(
                             color: ColorConst.cF3F3F3, fontSize: 11.sp),
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        "13.00 PM",
+                        DateFormat.Hm().format(cachedTodo.dateTime),
                         style: RubikFont.w400.copyWith(
                             color: ColorConst.cF3F3F3, fontSize: 11.sp),
                       )
@@ -101,7 +103,7 @@ class ReminderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => height;
+  double get maxExtent => 132.h;
 
   @override
   double get minExtent => 0;

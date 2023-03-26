@@ -2,7 +2,7 @@ import 'package:udevs_todo/data/db/local_db.dart';
 import 'package:udevs_todo/data/models/cached_todo_model.dart';
 
 class TodoRepository {
-  static Future<List<CachedTodoModel>> getAllToDos() async {
+  Future<List<CachedTodoModel>> getAllToDos() async {
     final db = await LocalDb.getInstance.database;
     const orderBy = "${CachedToDoFields.dateTime} ASC";
     final toDos = await db.query(
@@ -12,15 +12,13 @@ class TodoRepository {
     return toDos.map((json) => CachedTodoModel.fromJson(json)).toList();
   }
 
-  static Future<CachedTodoModel> insertCacheToDo(
-      CachedTodoModel cachedTodo) async {
+  Future<CachedTodoModel> addCacheToDo(CachedTodoModel cachedTodo) async {
     final db = await LocalDb.getInstance.database;
     final id = await db.insert(CachedToDoFields.tableName, cachedTodo.toJson());
     return cachedTodo.copyWith(id: id);
   }
 
-  static Future<int> updateCachedTodoStatus(
-      int id, CachedTodoModel status) async {
+  Future<int> updateCachedTodoStatus(int id, bool status) async {
     Map<String, dynamic> row = {
       CachedToDoFields.isDone: status,
     };
@@ -33,7 +31,7 @@ class TodoRepository {
     );
   }
 
-  static Future<int> deleteCachedTodoById(int id) async {
+  Future<int> deleteCachedTodoById(int id) async {
     final db = await LocalDb.getInstance.database;
     var t = await db.delete(CachedToDoFields.tableName,
         where: "${CachedToDoFields.id}=?", whereArgs: [id]);
@@ -44,7 +42,7 @@ class TodoRepository {
     }
   }
 
-  static Future<int> updateCachedTodo({
+  Future<int> updateCachedTodo({
     required int id,
     required CachedTodoModel cachedTodo,
   }) async {

@@ -47,7 +47,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
                 )
               : null,
         ),
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 50),
         child: Center(
           child: Icon(
             Icons.check,

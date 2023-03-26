@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:udevs_todo/bloc/todo_bloc.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
@@ -128,7 +129,16 @@ class _AddBottomViewState extends State<AddBottomView> {
                   ),
                   const Spacer(),
                   CustomBlueButton(
-                    onTap: () {},
+                    onTap: () {
+                      context.read<TodoBloc>().add(
+                            AddTodoEvent(
+                              selectedCategoryId: selectedCategoryId,
+                              title: controller.text,
+                              dateTime: pickedDate,
+                              context: context,
+                            ),
+                          );
+                    },
                     title: 'Add task',
                   ),
                   SizedBox(height: 16.h),
