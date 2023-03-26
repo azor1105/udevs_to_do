@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:udevs_todo/bloc/todo_bloc.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
 import 'package:udevs_todo/presentation/utils/rubik_font.dart';
@@ -51,9 +53,9 @@ class CategoryGridItem extends StatelessWidget {
           ),
           SizedBox(height: 30.h),
           Text(
-            '24 Task',
+            '${context.read<TodoBloc>().getTaskCountByCatgory(categoryModel.id)} Task',
             style: RubikFont.w400.copyWith(
-              fontSize: 8.sp,
+              fontSize: 10.sp,
               color: ColorConst.cA1A1A1,
             ),
           ),

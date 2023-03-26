@@ -71,17 +71,19 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     UpdateStatusEvent event,
     Emitter<TodoState> emit,
   ) async {
-    // var todos = state.todos;
-    // for (var element in todos) {
-    //   if (element.id == event.id) {
-    //     element.copyWith(isDone: event.status);
-    //   }
-    // }
-    // emit(state.copyWith(todos: todos));
     await todoRepository.updateCachedTodoStatus(
       event.id,
       event.status,
     );
     add(GetTodosEvent());
+  }
+
+  int getTaskCountByCatgory(int categoryId) {
+    int count = 0;
+    List<CachedTodoModel> todos = state.todos;
+    for (var todo in todos) {
+      if (todo.categoryId == categoryId) count++;
+    }
+    return count;
   }
 }
