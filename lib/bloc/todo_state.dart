@@ -9,7 +9,7 @@ extension TodoStatusX on TodoStatus {
   bool get isLoading => this == TodoStatus.loading;
 }
 
-class TodoState extends Equatable {
+class TodoState   {
   const TodoState({
     this.todoStatus = TodoStatus.initial,
     this.showReminder = true,
@@ -31,6 +31,6 @@ class TodoState extends Equatable {
         showReminder: showReminder ?? this.showReminder,
       );
 
-  @override
-  List<Object> get props => [todoStatus, showReminder, todos];
+  // @override
+  // List<Object> get props => [todoStatus, showReminder, todos];
 }

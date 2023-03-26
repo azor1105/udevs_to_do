@@ -37,11 +37,13 @@ class AddTodoEvent extends TodoEvent {
     required this.title,
     this.dateTime,
     required this.context,
+    required this.categoryName,
   });
   final String title;
   final int selectedCategoryId;
   final DateTime? dateTime;
   final BuildContext context;
+  final String categoryName;
 
   @override
   List<Object?> get props => [
@@ -49,5 +51,6 @@ class AddTodoEvent extends TodoEvent {
         selectedCategoryId,
         dateTime,
         context,
+        categoryName,
       ];
 }

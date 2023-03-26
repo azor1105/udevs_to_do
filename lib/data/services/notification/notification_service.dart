@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
+import 'package:udevs_todo/data/models/cached_todo_model.dart';
 
 class LocalNotificationService {
   static final LocalNotificationService localNotificationService =
@@ -75,22 +76,25 @@ class LocalNotificationService {
       const DarwinNotificationDetails();
 
   void scheduleNotification({
-    required DateTime dateTime,
-    required int id,
+    required CachedTodoModel cachedTodo,
+    required String categoryName,
   }) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      "Test",
-      "Test body",
+      cachedTodo.id!,
+      categoryName,
+      cachedTodo.title,
       tz.TZDateTime.from(
-        dateTime,
+        cachedTodo.dateTime,
         tz.local,
       ),
       NotificationDetails(
         android: AndroidNotificationDetails(
           androidNotificationChannel.id,
           androidNotificationChannel.name,
-          channelDescription: 'To remind you about upcoming birthdays',
+          channelDescription: 'To remind about came todo',
+          playSound: true,
+          showProgress: true,
+          styleInformation: const BigTextStyleInformation(''),
         ),
       ),
       payload: "",

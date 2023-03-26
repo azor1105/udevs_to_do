@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:udevs_todo/data/models/cached_todo_model.dart';
 import 'package:udevs_todo/data/repositories/todo_repository.dart';
+import 'package:udevs_todo/data/services/notification/notification_service.dart';
 import 'package:udevs_todo/presentation/utils/message_utils.dart';
 
 part 'todo_event.dart';
@@ -36,15 +37,21 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       MessageUtils.getMyToast(message: 'Please, select project');
     } else if (event.dateTime == null) {
       MessageUtils.getMyToast(message: 'Please, choose the date');
+    } else if (event.dateTime!.difference(DateTime.now()).inMinutes <= 0) {
+      MessageUtils.getMyToast(message: 'Task time must be in the future');
     } else {
       Navigator.of(event.context).pop();
-      await todoRepository.addCacheToDo(
+      CachedTodoModel cachedTodoModel = await todoRepository.addCacheToDo(
         CachedTodoModel(
           categoryId: event.selectedCategoryId,
           title: event.title,
           dateTime: event.dateTime!,
           isDone: false,
         ),
+      );
+      LocalNotificationService.localNotificationService.scheduleNotification(
+        cachedTodo: cachedTodoModel,
+        categoryName: event.categoryName,
       );
       add(GetTodosEvent());
     }
@@ -63,19 +70,33 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     DeleteTodoEvent event,
     Emitter<TodoState> emit,
   ) async {
-    await todoRepository.deleteCachedTodoById(event.id);
-    add(GetTodosEvent());
+    todoRepository.deleteCachedTodoById(event.id);
+    var todos = state.todos;
+    todos.removeWhere((element) => element.id == event.id);
+    LocalNotificationService.localNotificationService.cancelNotificationById(
+      event.id,
+    );
+    emit(state.copyWith(todos: todos));
   }
 
   void updateStatus(
     UpdateStatusEvent event,
     Emitter<TodoState> emit,
   ) async {
-    await todoRepository.updateCachedTodoStatus(
+    var todos = state.todos;
+    for (int i = 0; i < todos.length; i++) {
+      if (todos[i].id == event.id) {
+        var todo = todos[i];
+        todos.removeAt(i);
+        todos.insert(i, todo.copyWith(isDone: event.status));
+        break;
+      }
+    }
+    emit(state.copyWith(todos: todos));
+    todoRepository.updateCachedTodoStatus(
       event.id,
       event.status,
     );
-    add(GetTodosEvent());
   }
 
   int getTaskCountByCatgory(int categoryId) {
