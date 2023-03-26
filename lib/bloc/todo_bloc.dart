@@ -7,6 +7,13 @@ part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(const TodoState(todos: [])) {
-    on<TodoEvent>((event, emit) {});
+    on<CloseReminderEvent>(closeReminder);
+  }
+
+  void closeReminder(
+    CloseReminderEvent event,
+    Emitter<TodoState> emit,
+  ) {
+    emit(state.copyWith(showReminder: false));
   }
 }

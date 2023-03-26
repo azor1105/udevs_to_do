@@ -20,6 +20,17 @@ class TodoState extends Equatable {
   final bool showReminder;
   final List<CachedTodoModel> todos;
 
+  TodoState copyWith({
+    TodoStatus? todoStatus,
+    bool? showReminder,
+    List<CachedTodoModel>? todos,
+  }) =>
+      TodoState(
+        todos: todos ?? this.todos,
+        todoStatus: todoStatus ?? this.todoStatus,
+        showReminder: showReminder ?? this.showReminder,
+      );
+
   @override
   List<Object> get props => [todoStatus, showReminder, todos];
 }

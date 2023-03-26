@@ -7,10 +7,10 @@ abstract class TodoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CloseReminder extends TodoEvent {}
+class CloseReminderEvent extends TodoEvent {}
 
-class AddTodo extends TodoEvent {
-  const AddTodo({required this.cachedTodoModel});
+class AddTodoEvent extends TodoEvent {
+  const AddTodoEvent({required this.cachedTodoModel});
   final CachedTodoModel cachedTodoModel;
 
   @override
