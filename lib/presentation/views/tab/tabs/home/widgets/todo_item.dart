@@ -116,9 +116,6 @@ class TodoItem extends StatelessWidget {
                           onChanged: (v) => context.read<TodoBloc>().add(
                                 UpdateTodoEvent(
                                   todoModel: cachedTodo.copyWith(isDone: v),
-                                  categoryName: context
-                                      .read<CategoryRepository>()
-                                      .getNameById(cachedTodo.id!),
                                 ),
                               ),
                         ),

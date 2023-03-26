@@ -22,15 +22,13 @@ class DeleteTodoEvent extends TodoEvent {
 class UpdateTodoEvent extends TodoEvent {
   const UpdateTodoEvent({
     required this.todoModel,
-    required this.categoryName,
   });
 
   final CachedTodoModel todoModel;
-  final String categoryName;
+
   @override
   List<Object?> get props => [
         todoModel,
-        categoryName,
       ];
 }
 

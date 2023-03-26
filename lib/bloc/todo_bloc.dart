@@ -91,12 +91,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         break;
       }
     }
-    LocalNotificationService.localNotificationService
-        .cancelNotificationById(event.todoModel.id!);
-    LocalNotificationService.localNotificationService.scheduleNotification(
-      cachedTodo: event.todoModel,
-      categoryName: event.categoryName,
-    );
     emit(state.copyWith(todos: todos));
     todoRepository.updateCachedTodo(cachedTodo: event.todoModel);
   }

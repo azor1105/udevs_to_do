@@ -6,6 +6,7 @@ import 'package:udevs_todo/bloc/todo_bloc.dart';
 import 'package:udevs_todo/data/models/cached_todo_model.dart';
 import 'package:udevs_todo/data/models/category_model.dart';
 import 'package:udevs_todo/data/repositories/category_repository.dart';
+import 'package:udevs_todo/data/services/notification/notification_service.dart';
 import 'package:udevs_todo/presentation/utils/assets.dart';
 import 'package:udevs_todo/presentation/utils/constants/color_const.dart';
 import 'package:udevs_todo/presentation/utils/date_time_utils.dart';
@@ -142,18 +143,25 @@ class _EditBottomViewState extends State<EditBottomView> {
                         MessageUtils.getMyToast(
                             message: 'Task time must be in the future');
                       } else {
+                        var todo = widget.todoModel.copyWith(
+                          categoryId: selectedCategoryId,
+                          dateTime: pickedDate,
+                          title: controller.text,
+                        );
                         context.read<TodoBloc>().add(
                               UpdateTodoEvent(
-                                todoModel: widget.todoModel.copyWith(
-                                  categoryId: selectedCategoryId,
-                                  dateTime: pickedDate,
-                                  title: controller.text,
-                                ),
-                                categoryName: context
-                                    .read<CategoryRepository>()
-                                    .getNameById(selectedCategoryId),
+                                todoModel: todo,
                               ),
                             );
+                        LocalNotificationService.localNotificationService
+                            .cancelNotificationById(todo.id!);
+                        LocalNotificationService.localNotificationService
+                            .scheduleNotification(
+                          cachedTodo: todo,
+                          categoryName: context
+                              .read<CategoryRepository>()
+                              .getNameById(selectedCategoryId),
+                        );
                         Navigator.of(context).pop();
                       }
                     },
