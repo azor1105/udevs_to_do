@@ -149,6 +149,9 @@ class _EditBottomViewState extends State<EditBottomView> {
                                   dateTime: pickedDate,
                                   title: controller.text,
                                 ),
+                                categoryName: context
+                                    .read<CategoryRepository>()
+                                    .getNameById(selectedCategoryId),
                               ),
                             );
                         Navigator.of(context).pop();

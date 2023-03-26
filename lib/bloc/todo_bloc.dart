@@ -69,7 +69,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   void deleteTodo(
     DeleteTodoEvent event,
     Emitter<TodoState> emit,
-  ) async {
+  ) {
     todoRepository.deleteCachedTodoById(event.id);
     var todos = state.todos;
     todos.removeWhere((element) => element.id == event.id);
@@ -82,7 +82,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   void updateTodo(
     UpdateTodoEvent event,
     Emitter<TodoState> emit,
-  ) async {
+  ) {
     var todos = state.todos;
     for (int i = 0; i < todos.length; i++) {
       if (todos[i].id == event.todoModel.id) {
@@ -91,6 +91,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         break;
       }
     }
+    LocalNotificationService.localNotificationService
+        .cancelNotificationById(event.todoModel.id!);
+    LocalNotificationService.localNotificationService.scheduleNotification(
+      cachedTodo: event.todoModel,
+      categoryName: event.categoryName,
+    );
     emit(state.copyWith(todos: todos));
     todoRepository.updateCachedTodo(cachedTodo: event.todoModel);
   }

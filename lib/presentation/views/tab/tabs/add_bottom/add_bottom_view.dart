@@ -136,8 +136,9 @@ class _AddBottomViewState extends State<AddBottomView> {
                               title: controller.text,
                               dateTime: pickedDate,
                               context: context,
-                              categoryName:
-                                  categories[selectedCategoryId].title,
+                              categoryName: context
+                                  .read<CategoryRepository>()
+                                  .getNameById(selectedCategoryId),
                             ),
                           );
                     },

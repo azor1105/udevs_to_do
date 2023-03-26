@@ -62,4 +62,8 @@ class CategoryRepository {
   Color getColorById(int id) {
     return categories.where((element) => element.id == id).toList()[0].color;
   }
+
+  String getNameById(int id) {
+    return categories.where((element) => element.id == id).toList()[0].title;
+  }
 }
