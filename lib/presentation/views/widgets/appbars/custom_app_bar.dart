@@ -19,7 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
           elevation: 0.0,
           flexibleSpace: Container(
             width: double.infinity,
-            height: 106.h,
+            height: 108.h,
             decoration: const BoxDecoration(
               gradient: LinearGradient(colors: ColorConst.appBarGradient),
             ),
@@ -81,7 +81,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
   }
 
   @override
-  Size get preferredSize => Size(double.infinity, 68.h);
+  Size get preferredSize => Size(double.infinity, 69.h);
 
   @override
   Widget get child => throw UnimplementedError();
